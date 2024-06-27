@@ -1,16 +1,15 @@
+using WebApplication1.Endpoints;
+using WebApplication1.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+builder.Services.AddSingleton<AnimalRepository>();
 
 var app = builder.Build();
 
-app.Configuration.GetConnectionString("Default");
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -18,6 +17,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.MapControllers();
 
+app.MapAnimalEndpoints();
+
+app.MapControllers();
 app.Run();
